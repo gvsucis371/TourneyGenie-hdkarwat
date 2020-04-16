@@ -1,0 +1,28 @@
+.authors {
+    display: inline-block;
+    border: black 1px solid;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 20px; 
+    background-color: whitesmoke;
+  }
+  
+  .author-list, .author-form {
+    display: inline-block;
+    border: black 2px solid;
+    border-radius: 7px;
+    margin: 5px;
+    padding: 10p0x; 
+    background-color: cornflowerblue;
+  }
+  
+  .author-form label {
+    display: inline-block;
+    width: 230px;
+    margin-right: 50px;
+  }
+  
+  .author-form input {
+    width: 150px;
+    margin-right: 5px;
+  }
