@@ -1,0 +1,23 @@
+{
+  "name": "tourneygenie-hdkarwat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "TourneyDB.js",
+  "dependencies": {
+    "http-server": "^0.12.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gvsucis371/TourneyGenie-hdkarwat.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gvsucis371/TourneyGenie-hdkarwat/issues"
+  },
+  "homepage": "https://github.com/gvsucis371/TourneyGenie-hdkarwat#readme"
+}
