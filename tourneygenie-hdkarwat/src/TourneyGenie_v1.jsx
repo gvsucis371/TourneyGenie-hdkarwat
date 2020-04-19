@@ -66,10 +66,10 @@ function TourneyListItem({ tourney, onEditClicked, onDeleteClicked }) {
       <td className="col-md-3">{tourney.tourneyDate}</td>
       <td className="col-md-3">{tourney.tourneyLocation}</td>
       <td className="col-md-3 btn-toolbar">
-        <button className="btn btn-success btn-sm" onClick={event => onEditClicked(author)}>
+        <button className="btn btn-success btn-sm" onClick={event => onEditClicked(tourney)}>
           <i className="glyphicon glyphicon-pencil"></i> Edit
           </button>
-        <button className="btn btn-danger btn-sm" onClick={event => onDeleteClicked(author.id)}>
+        <button className="btn btn-danger btn-sm" onClick={event => onDeleteClicked(tourney.id)}>
           <i className="glyphicon glyphicon-remove"></i> Delete
           </button>
       </td>
@@ -133,7 +133,7 @@ React.useEffect(() => fetchTourneys(), []);
 
   let updateTourney= (field, value) => {
     let newTourney = { ...currentTourneys}
-    newAuthor[field] = value;
+    newTourney[field] = value;
     setCurrentTourneys(newTourney);
   }
 
@@ -162,7 +162,7 @@ React.useEffect(() => fetchTourneys(), []);
         'Accept': 'application/json',
         'Content-Type': 'application/json;charset=UTF-8'
       },
-      body: JSON.stringify(author)
+      body: JSON.stringify(tourney)
     };
     console.log("Attempting to update tournament");
     console.log(tourney);
@@ -204,12 +204,12 @@ React.useEffect(() => fetchTourneys(), []);
 
   let editClicked = (tourney) => {
     setFormMode("update");
-    setCurrentAuthor(tourney);
+    setCurrentTourneys(tourney);
   }
 
   let cancelClicked = () => {
     setFormMode("new");
-    setCurrentAuthor(emptyTourney)
+    setCurrentTourneys(emptyTourney)
   }
 
   let deleteClicked = (id) => {
