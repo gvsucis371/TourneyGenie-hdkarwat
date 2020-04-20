@@ -1,6 +1,6 @@
 var sqlite3 = require('sqlite3').verbose();
 
-class ToureyDB {
+class TourneyDB {
 
     static initialize() {
         this.db.serialize(() => {
