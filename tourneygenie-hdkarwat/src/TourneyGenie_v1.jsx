@@ -81,7 +81,7 @@ function TourneyList({ tourneys, onEditClicked, onDeleteClicked }) {
   console.log("The Tournaments: ");
   console.log(tourneys);
   const tourneyItems = tourneys.map((tourney) => (
-    <TourneyListItem key={tourney.id} tourneys={tourney} onEditClicked={onEditClicked} onDeleteClicked={onDeleteClicked} />
+    <TourneyListItem key={tourney.id} tourney={tourneys} onEditClicked={onEditClicked} onDeleteClicked={onDeleteClicked} />
   ));
 
   return (
