@@ -5,8 +5,8 @@ const express = require('express')
 const cors = require('cors');
 
 
-const AuthorController = require('./AuthorController');
-const authorController = new AuthorController();
+const TournamentController = require('./TournamentController');
+const tournamentController = new TournamentController();
 
 /* Import the body-parser module.  (Used for parsing Post data) */
 const bodyParser = require('body-parser');
@@ -53,7 +53,7 @@ let makeCrudRoutes = (name, controller) => {
     });
 };
 
-makeCrudRoutes('authors', authorController);
+makeCrudRoutes('tourneys', tournamentController);
 
 /* Launch the server */
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))

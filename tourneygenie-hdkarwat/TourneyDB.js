@@ -4,14 +4,14 @@ class TourneyDB {
 
     static initialize() {
         this.db.serialize(() => {
-            this.db.run('CREATE TABLE tourney(id INTEGER PRIMARY KEY, tourneyName TEXT NOT NULL, tourneyDate TEXT NOT NULL, tourneyLocation TEXT NOT NULL);');
-            this.db.run('INSERT INTO tourney (tourneyName, tourneyDate, tourneyLocation) VALUES ("SoftballSmash", "06/24/2020", "Frankenmuth");');
+            this.db.run('CREATE TABLE Tourneys (id INTEGER PRIMARY KEY, tourneyName TEXT NOT NULL, tourneyDate TEXT NOT NULL, tourneyLocation TEXT NOT NULL);');
+            this.db.run('INSERT INTO Tourneys (tourneyName, tourneyDate, tourneyLocation) VALUES ("SoftballSmash", "06/24/2020", "Frankenmuth");');
         });
     }
 
     static all() {
         return new Promise((resolve, reject) => {
-            this.db.all('SELECT * from tourney', (err, rows) => {
+            this.db.all('SELECT * from Tourneys', (err, rows) => {
                 resolve(rows);
             });
         });
@@ -20,20 +20,20 @@ class TourneyDB {
     // Notice that there is *a lot* of error handling missing here.
     static find(id) {
         return new Promise((resolve, reject) => {
-            this.db.all(`SELECT * from tourney where (id == ${id})`, (err, rows) => {
+            this.db.all(`SELECT * from Tourneys where (id == ${id})`, (err, rows) => {
                 if (rows.length >= 1) {
                     console.log("resolving");
                     resolve(rows[0]);
                 } else {
                     console.log("rejecting");
-                    reject(`tourney with Id ${id} not found`);
+                    reject(`Tournament with Id ${id} not found`);
                 }
             });
         });
     }
 
     static create(tourney) {
-        let sql = `INSERT INTO tourney (tourneyName, tourneyDate, tourneyLocation) VALUES ("${tourney.tourneyName}", "${tourney.tourneyDate}", "${tourney.tourneyLocation}");`;
+        let sql = `INSERT INTO Tourneys (tourneyName, tourneyDate, tourneyLocation) VALUES ("${tourney.tourneyName}", "${tourney.tourneyDate}", "${tourney.tourneyLocation}");`;
         return new Promise((resolve, reject) => {
             console.log('The sql: ');
             console.log(sql);
@@ -53,7 +53,7 @@ class TourneyDB {
     }
 
     static update(tourney) {
-        let sql = `UPDATE tourney SET tourneyName="${tourney.tourneyName}", tourneyDate="${tourney.tourneyDate}", tourneyLocation="${tourney.tourneyLocation}" WHERE id="${tourney.id}"`;
+        let sql = `UPDATE Tourneys SET tourneyName="${tourney.tourneyName}", tourneyDate="${tourney.tourneyDate}", tourneyLocation="${tourney.tourneyLocation}" WHERE id="${tourney.id}"`;
         return new Promise((resolve, reject) => {
             this.db.run(sql, function (err, rows) {
                 if (err) {
@@ -68,7 +68,7 @@ class TourneyDB {
     }
 
     static delete(tourney) {
-        let sql = `DELETE from tourney WHERE id="${tourney.id}"`;
+        let sql = `DELETE from Tourneys WHERE id="${tourney.id}"`;
         return new Promise((resolve, reject) => {
             this.db.run(sql, function (err, rows) {
                 if (err) {

@@ -1,2 +1,2 @@
-let AuthorDB = require('./AuthorDB');
-AuthorDB.initialize();
+let TourneyDB = require('./TourneyDB');
+TourneyDB.initialize();
