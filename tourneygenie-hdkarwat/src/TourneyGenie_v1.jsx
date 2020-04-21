@@ -2,6 +2,17 @@ import React from 'react';
 
 const apiURL = 'http://localhost:3001'
 
+function TourneyIntro() {
+
+return (
+  <div className="tourneyGenie-into"> 
+      <h1> Welcome to Tourney Genie </h1>  
+      <p>The application that every softball and baseball tournament director needs to run a smooth tournament weekend.</p>
+    </div>
+
+);
+}
+
 function TourneyEntryForm({ tourney, updateTourney, formMode, submitCallback, cancelCallback }) {
 
   let cancelClicked = (event) => {
@@ -14,7 +25,7 @@ function TourneyEntryForm({ tourney, updateTourney, formMode, submitCallback, ca
   let renderButtons = () => {
     if (formMode === "new") {
       return (
-        <button type="submit" className="btn btn-primary">Create</button>
+        <button type="submit" className="btn btn-primary" onClick={formSubmitted}>Create Tournament</button>
       );
     } else {
       return (
@@ -34,8 +45,9 @@ function TourneyEntryForm({ tourney, updateTourney, formMode, submitCallback, ca
   };
 
   return (
+  
     <div className="tourneyEntry-form">
-      <h1> Tourney Genie </h1>
+      <h1> Tournament Entry Form </h1>
       <form onSubmit={formSubmitted}>
         <div className="tourneyForm-group">
           <label>Tournament Name</label>
@@ -88,6 +100,7 @@ function TourneyList({ tourneys, onEditClicked, onDeleteClicked }) {
     <div className="tourney-list">
       <table className="table table-hover">
         <thead>
+          <h1>Current Tournaments</h1>
           <tr>
             <th className="col-md-3">Tournament Name</th>
             <th className="col-md-3">Tournament Date</th>
@@ -177,7 +190,7 @@ React.useEffect(() => fetchTourneys(), []);
 
   let formSubmitted = () => {
     if (formMode === "new") {
-      postNewTourney(currentTourneys.then(data => {
+      postNewTourney(currentTourneys).then(data => {
         console.log("Received data");
         console.log(data);
 
@@ -189,7 +202,7 @@ React.useEffect(() => fetchTourneys(), []);
           console.log("New tournament wasn't created because " + data.message);
           alert(data.message)
         }
-      }));
+      });
     } else {
       // Notice! This does not submit changes to the server!
       alert("Change not submitted to server. (Just not part of this example.)")
@@ -235,6 +248,7 @@ React.useEffect(() => fetchTourneys(), []);
 
   return (
     <div className="tourneys">
+      <TourneyIntro />
       <TourneyEntryForm formMode={formMode} tourney={currentTourneys} updateTourney={updateTourney}
         submitCallback={formSubmitted} cancelCallback={cancelClicked} />
       <div />

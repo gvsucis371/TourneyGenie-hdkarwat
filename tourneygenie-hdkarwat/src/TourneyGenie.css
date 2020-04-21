@@ -1,4 +1,5 @@
-.authors {
+.tourneys {
+  color: whitesmoke;
     display: inline-block;
     border: black 1px solid;
     border-radius: 10px;
@@ -6,23 +7,32 @@
     padding: 20px; 
     background-color: whitesmoke;
   }
+
+  .tourneyGenie-into {
+    color: cadetblue;
+  }
   
-  .author-list, .author-form {
+  .tourneyGenie-into h1{
+    text-align: center;
+    color: cadetblue;
+  }
+  .tourney-list, .tourneyEntry-form {
     display: inline-block;
     border: black 2px solid;
     border-radius: 7px;
     margin: 5px;
-    padding: 10p0x; 
-    background-color: cornflowerblue;
+    padding: 10px; 
+    background-color: cadetblue;
   }
   
-  .author-form label {
+  .tourneyEntry-form label {
+    color: whitesmoke;
     display: inline-block;
     width: 230px;
     margin-right: 50px;
   }
   
-  .author-form input {
+  .tourneyEntry-form input {
     width: 150px;
     margin-right: 5px;
   }
