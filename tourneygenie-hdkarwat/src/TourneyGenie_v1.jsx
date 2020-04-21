@@ -100,7 +100,7 @@ function TourneyList({ tourneys, onEditClicked, onDeleteClicked }) {
     <div className="tourney-list">
       <table className="table table-hover">
         <thead>
-          <h1>Current Tournaments</h1>
+        <h1>Current Tournaments</h1>
           <tr>
             <th className="col-md-3">Tournament Name</th>
             <th className="col-md-3">Tournament Date</th>
