@@ -10,29 +10,31 @@
 
   .tourneyGenie-into {
     color: cadetblue;
+    text-align: center;
   }
-  
+
   .tourneyGenie-into h1{
     text-align: center;
     color: cadetblue;
   }
-  .tourney-list, .tourneyEntry-form {
+  .tourney-list, .tourneyEntry-form, .teamEntry-form {
     display: inline-block;
     border: black 2px solid;
     border-radius: 7px;
     margin: 5px;
     padding: 10px; 
     background-color: cadetblue;
+    visibility: hidden;
   }
   
-  .tourneyEntry-form label {
+  .tourneyEntry-form label, .teamEntry-form label {
     color: whitesmoke;
     display: inline-block;
     width: 230px;
     margin-right: 50px;
   }
   
-  .tourneyEntry-form input {
+  .tourneyEntry-form input, .teamEntry-form input{
     width: 150px;
     margin-right: 5px;
   }

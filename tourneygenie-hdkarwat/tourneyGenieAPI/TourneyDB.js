@@ -4,8 +4,8 @@ class TourneyDB {
 
     static initialize() {
         this.db.serialize(() => {
-            this.db.run('CREATE TABLE Tourneys (id INTEGER PRIMARY KEY, tourneyName TEXT NOT NULL, tourneyDate TEXT NOT NULL, tourneyLocation TEXT NOT NULL);');
-            this.db.run('INSERT INTO Tourneys (tourneyName, tourneyDate, tourneyLocation) VALUES ("SoftballSmash", "06/24/2020", "Frankenmuth");');
+            this.db.run('CREATE TABLE Tourneys (id INTEGER PRIMARY KEY, tourneyID TEXT NOT NULL, tourneyName TEXT NOT NULL, tourneyDate TEXT NOT NULL, tourneyLocation TEXT NOT NULL);');
+            this.db.run('INSERT INTO Tourneys (tourneyID, tourneyName, tourneyDate, tourneyLocation) VALUES ("100001", "SoftballSmash", "06/24/2020", "Frankenmuth");');
         });
     }
 
@@ -33,7 +33,7 @@ class TourneyDB {
     }
 
     static create(tourney) {
-        let sql = `INSERT INTO Tourneys (tourneyName, tourneyDate, tourneyLocation) VALUES ("${tourney.tourneyName}", "${tourney.tourneyDate}", "${tourney.tourneyLocation}");`;
+        let sql = `INSERT INTO Tourneys (tourneyID, tourneyName, tourneyDate, tourneyLocation) VALUES ("${tourney.tourneyID}","${tourney.tourneyName}", "${tourney.tourneyDate}", "${tourney.tourneyLocation}");`;
         return new Promise((resolve, reject) => {
             console.log('The sql: ');
             console.log(sql);
@@ -53,7 +53,7 @@ class TourneyDB {
     }
 
     static update(tourney) {
-        let sql = `UPDATE Tourneys SET tourneyName="${tourney.tourneyName}", tourneyDate="${tourney.tourneyDate}", email="${tourney.tourneyLocation}" WHERE id="${tourney.id}"`;
+        let sql = `UPDATE Tourneys SET tourneyID="${tourney.tourneyID}, "tourneyName="${tourney.tourneyName}", tourneyDate="${tourney.tourneyDate}", email="${tourney.tourneyLocation}" WHERE id="${tourney.id}"`;
         return new Promise((resolve, reject) => {
             this.db.run(sql, function (err, rows) {
                 if (err) {
@@ -85,4 +85,90 @@ class TourneyDB {
 
 TourneyDB.db = new sqlite3.Database('blog.sqlite');
 
+class TeamDB {
+
+    static initialize() {
+        this.db.serialize(() => {
+            this.db.run('CREATE TABLE Teams (id INTEGER PRIMARY KEY, teamName TEXT NOT NULL, teamAgeGroup TEXT NOT NULL, tourneyID TEXT NOT NULL);');
+            this.db.run('INSERT INTO Teams (teamName, teamAgeGroup, tourneyID) VALUES ("Muth Mavericks Red", "14U", "100001");');
+        });
+    }
+
+    static all() {
+        return new Promise((resolve, reject) => {
+            this.db.all('SELECT * from Teams', (err, rows) => {
+                resolve(rows);
+            });
+        });
+    }
+
+    // Notice that there is *a lot* of error handling missing here.
+    static find(id) {
+        return new Promise((resolve, reject) => {
+            this.db.all(`SELECT * from Teams where (id == ${id})`, (err, rows) => {
+                if (rows.length >= 1) {
+                    console.log("resolving");
+                    resolve(rows[0]);
+                } else {
+                    console.log("rejecting");
+                    reject(`Team with Id ${id} not found`);
+                }
+            });
+        });
+    }
+
+    static create(team) {
+        let sql = `INSERT INTO Teams (teamName, teamAgeGroup, tourneyID) VALUES ("${team.teamName}","${team.teamAgeGroup}", "${team.tourneyID});`;
+        return new Promise((resolve, reject) => {
+            console.log('The sql: ');
+            console.log(sql);
+
+            this.db.run(sql, function (err, rows) {
+                console.log("This: ");
+                console.log(this);
+                if (err) {
+                    console.log('Create Error');
+                    console.log(err);
+                    reject(err);
+                } else {
+                    resolve({ id: this.lastID, ...team })
+                }
+            });
+        })
+    }
+
+    static update(team) {
+        let sql = `UPDATE Teams SET teamName="${team.teamName}, "teamAgeGroup="${team.teamAgeGroup}", tourneyID="${team.tourneyID}" WHERE id="${team.id}"`;
+        return new Promise((resolve, reject) => {
+            this.db.run(sql, function (err, rows) {
+                if (err) {
+                    console.log('Update Error');
+                    console.log(err);
+                    reject(err);
+                } else {
+                    resolve({ success: true });
+                }
+            });
+        });
+    }
+
+    static delete(team) {
+        let sql = `DELETE from Teams WHERE id="${team.id}"`;
+        return new Promise((resolve, reject) => {
+            this.db.run(sql, function (err, rows) {
+                if (err) {
+                    console.log('Delete Error');
+                    console.log(err);
+                    reject(err);
+                } else {
+                    resolve({ success: true });
+                }
+            });
+        });
+    } // end delete
+} // end TourneyDB
+
+TeamDB.db = new sqlite3.Database('blog2.sqlite');
+
 module.exports = TourneyDB;
+module.exports = TeamDB;

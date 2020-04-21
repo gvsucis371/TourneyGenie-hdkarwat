@@ -8,9 +8,13 @@ return (
   <div className="tourneyGenie-into"> 
       <h1> Welcome to Tourney Genie </h1>  
       <p>The application that every softball and baseball tournament director needs to run a smooth tournament weekend.</p>
-    </div>
+    <button type="submit" className="btn-into" onClick={changeTourneyFormVisibility} >Create New Tournament</button> 
+    <button type="submit" className="btn-into" onClick={changeTeamFormVisibility}>Add Team Info</button>
+    <button type="submit" className="btn-into" onClick={changeTourneyListVisibility} >View Current Tournaments</button> 
+    <button type="submit" className="btn-into" onClick={changeTeamListVisibility}>View Current Teams</button>
+  </div>
 
-);
+  );
 }
 
 function TourneyEntryForm({ tourney, updateTourney, formMode, submitCallback, cancelCallback }) {
@@ -33,6 +37,8 @@ function TourneyEntryForm({ tourney, updateTourney, formMode, submitCallback, ca
           <button type="submit" className="btn btn-primary">Save</button>
           <button type="submit" className="btn btn-danger" onClick={cancelClicked} >Cancel</button>
         </div>
+
+        
       );
     }
   } // end renderButtons
@@ -49,6 +55,11 @@ function TourneyEntryForm({ tourney, updateTourney, formMode, submitCallback, ca
     <div className="tourneyEntry-form">
       <h1> Tournament Entry Form </h1>
       <form onSubmit={formSubmitted}>
+      <div className="tourneyForm-group">
+          <label>Tournament ID</label>
+          <input type="text" className="form-control" autoComplete='tourney-ID' name="tourneyID" id="tourneyID"
+            placeholder="ex: 100001" value={tourney.tourneyID} onChange={(event) => updateTourney('tourneyID', event.target.value)} />
+        </div>
         <div className="tourneyForm-group">
           <label>Tournament Name</label>
           <input type="text" className="form-control" autoComplete='tourney-name' name="tourneyName" id="tourneyName"
@@ -70,10 +81,14 @@ function TourneyEntryForm({ tourney, updateTourney, formMode, submitCallback, ca
   );
 }
 
+//add here han 
+
+
 function TourneyListItem({ tourney, onEditClicked, onDeleteClicked }) {
 
   return (
     <tr>
+      <td className="col-md-3">{tourney.tourneyID}</td>
       <td className="col-md-3">{tourney.tourneyName}</td>
       <td className="col-md-3">{tourney.tourneyDate}</td>
       <td className="col-md-3">{tourney.tourneyLocation}</td>
@@ -102,6 +117,7 @@ function TourneyList({ tourneys, onEditClicked, onDeleteClicked }) {
         <thead>
         <h1>Current Tournaments</h1>
           <tr>
+            <th className="col-md-3">Tournament ID</th>
             <th className="col-md-3">Tournament Name</th>
             <th className="col-md-3">Tournament Date</th>
             <th className="col-md-3">Tournament Location</th>
@@ -115,6 +131,7 @@ function TourneyList({ tourneys, onEditClicked, onDeleteClicked }) {
     </div>
   );
 }
+
 
 function Tournaments() {
 
@@ -246,15 +263,36 @@ React.useEffect(() => fetchTourneys(), []);
 
   }
 
+
   return (
     <div className="tourneys">
       <TourneyIntro />
       <TourneyEntryForm formMode={formMode} tourney={currentTourneys} updateTourney={updateTourney}
         submitCallback={formSubmitted} cancelCallback={cancelClicked} />
+
+
       <div />
       <TourneyList tourneys={tourneyList} onEditClicked={editClicked} onDeleteClicked={deleteClicked} />
+  
     </div>
   );
 }
 
+function changeTourneyFormVisibility() {
+  document.getElementsByClassName('tourneyEntry-form')[0].style.visibility = 'visible';
+} 
+
+function changeTeamFormVisibility() {
+  document.getElementsByClassName('teamEntry-form')[0].style.visibility = 'visible';
+} 
+function changeTourneyListVisibility() {
+  document.getElementsByClassName('tourney-list')[0].style.visibility = 'visible';
+} 
+
+function changeTeamListVisibility() {
+  document.getElementsByClassName('tourney-list')[0].style.visibility = 'visible';
+} 
+
+
 export default Tournaments;
+
