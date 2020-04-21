@@ -1,17 +1,17 @@
 var sqlite3 = require('sqlite3').verbose();
 
-class TourneyDB {
+class TeamDB {
 
     static initialize() {
         this.db.serialize(() => {
-            this.db.run('CREATE TABLE Tourneys (id INTEGER PRIMARY KEY, tourneyID TEXT NOT NULL, tourneyName TEXT NOT NULL, tourneyDate TEXT NOT NULL, tourneyLocation TEXT NOT NULL);');
-            this.db.run('INSERT INTO Tourneys (tourneyID, tourneyName, tourneyDate, tourneyLocation) VALUES ("100001", "SoftballSmash", "06/24/2020", "Frankenmuth");');
+            this.db.run('CREATE TABLE Teams (id INTEGER PRIMARY KEY, teamName TEXT NOT NULL, teamAgeGroup TEXT NOT NULL, tourneyID TEXT NOT NULL);');
+            this.db.run('INSERT INTO Teams (teamName, teamAgeGroup, tourneyID) VALUES ("Muth Mavericks Red", "14U", "100001");');
         });
     }
 
     static all() {
         return new Promise((resolve, reject) => {
-            this.db.all('SELECT * from Tourneys', (err, rows) => {
+            this.db.all('SELECT * from Teams', (err, rows) => {
                 resolve(rows);
             });
         });
@@ -20,20 +20,20 @@ class TourneyDB {
     // Notice that there is *a lot* of error handling missing here.
     static find(id) {
         return new Promise((resolve, reject) => {
-            this.db.all(`SELECT * from Tourneys where (id == ${id})`, (err, rows) => {
+            this.db.all(`SELECT * from Teams where (id == ${id})`, (err, rows) => {
                 if (rows.length >= 1) {
                     console.log("resolving");
                     resolve(rows[0]);
                 } else {
                     console.log("rejecting");
-                    reject(`Tournament with Id ${id} not found`);
+                    reject(`Team with Id ${id} not found`);
                 }
             });
         });
     }
 
-    static create(tourney) {
-        let sql = `INSERT INTO Tourneys (tourneyID, tourneyName, tourneyDate, tourneyLocation) VALUES ("${tourney.tourneyID}","${tourney.tourneyName}", "${tourney.tourneyDate}", "${tourney.tourneyLocation}");`;
+    static create(team) {
+        let sql = `INSERT INTO Teams (teamName, teamAgeGroup, tourneyID) VALUES ("${team.teamName}","${team.teamAgeGroup}", "${team.tourneyID});`;
         return new Promise((resolve, reject) => {
             console.log('The sql: ');
             console.log(sql);
@@ -46,14 +46,14 @@ class TourneyDB {
                     console.log(err);
                     reject(err);
                 } else {
-                    resolve({ id: this.lastID, ...tourney })
+                    resolve({ id: this.lastID, ...team })
                 }
             });
         })
     }
 
-    static update(tourney) {
-        let sql = `UPDATE Tourneys SET tourneyID="${tourney.tourneyID}, "tourneyName="${tourney.tourneyName}", tourneyDate="${tourney.tourneyDate}", email="${tourney.tourneyLocation}" WHERE id="${tourney.id}"`;
+    static update(team) {
+        let sql = `UPDATE Teams SET teamName="${team.teamName}, "teamAgeGroup="${team.teamAgeGroup}", tourneyID="${team.tourneyID}" WHERE id="${team.id}"`;
         return new Promise((resolve, reject) => {
             this.db.run(sql, function (err, rows) {
                 if (err) {
@@ -67,8 +67,8 @@ class TourneyDB {
         });
     }
 
-    static delete(tourney) {
-        let sql = `DELETE from Tourneys WHERE id="${tourney.id}"`;
+    static delete(team) {
+        let sql = `DELETE from Teams WHERE id="${team.id}"`;
         return new Promise((resolve, reject) => {
             this.db.run(sql, function (err, rows) {
                 if (err) {
@@ -83,6 +83,5 @@ class TourneyDB {
     } // end delete
 } // end TourneyDB
 
-TourneyDB.db = new sqlite3.Database('blog.sqlite');
-
-module.exports = TourneyDB;
+TeamDB.db = new sqlite3.Database('blog.sqlite');
+module.exports = TeamDB;

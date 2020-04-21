@@ -3,6 +3,11 @@ module.exports = class Tournaments {
   static isValid(tourney, allTourneys) {
 
     let errors = [];
+
+    if (!tourney.tourneyID) {
+      errors.push("Tournament needs a id.");      
+    }
+
     if (!tourney.tourneyName) {
       errors.push("Tournament needs a name.");
     }

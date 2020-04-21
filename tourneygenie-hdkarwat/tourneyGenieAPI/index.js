@@ -8,6 +8,9 @@ const cors = require('cors');
 const TournamentController = require('./TournamentController');
 const tournamentController = new TournamentController();
 
+const TeamController = require('./TeamController');
+const teamController = new TeamController();
+
 /* Import the body-parser module.  (Used for parsing Post data) */
 const bodyParser = require('body-parser');
 
@@ -54,6 +57,7 @@ let makeCrudRoutes = (name, controller) => {
 };
 
 makeCrudRoutes('tourneys', tournamentController);
+makeCrudRoutes('teams', teamController); 
 
 /* Launch the server */
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))

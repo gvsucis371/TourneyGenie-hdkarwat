@@ -62,7 +62,7 @@ class TournamentController {
 
     async delete(req, res) {
         let id = req.params.id;
-        let tourney = await TourneyrDB.find(id);
+        let tourney = await TourneyDB.find(id);
         if (!tourney) {
             res.status(404);
             res.send("Could not find a tournament with id of " + id);

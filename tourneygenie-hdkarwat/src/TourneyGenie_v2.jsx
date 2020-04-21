@@ -10,14 +10,13 @@ return (
       <p>The application that every softball and baseball tournament director needs to run a smooth tournament weekend.</p>
     <button type="submit" className="btn-into" onClick={changeTourneyFormVisibility} >Create New Tournament</button> 
     <button type="submit" className="btn-into" onClick={changeTeamFormVisibility}>Add Team Info</button>
-    <button type="submit" className="btn-into" onClick={changeTourneyListVisibility} >View Current Tournaments</button> 
     <button type="submit" className="btn-into" onClick={changeTeamListVisibility}>View Current Teams</button>
   </div>
 
   );
 }
 ///new code 
-function TeamEntryForm({ tourney, updateTourney, formMode, submitCallback, cancelCallback }) {
+function TeamEntryForm({ team, updateTeam, formMode, submitCallback, cancelCallback }) {
 
     let cancelClicked = (event) => {
       event.preventDefault();
@@ -43,6 +42,38 @@ function TeamEntryForm({ tourney, updateTourney, formMode, submitCallback, cance
       }
     } // end renderButtons
   
+    let formSubmitted = (event) => {
+        // Prevent the browser from re-loading the page.
+        event.preventDefault();
+        submitCallback();
+      };
+    
+      return (
+      
+        <div className="teamEntry-form">
+          <h1> Team Entry Form </h1>
+          <form onSubmit={formSubmitted}>
+            <div className="tourneyForm-group">
+              <label>Team Name</label>
+              <input type="text" className="form-control" autoComplete='team-name' name="teamName" id="teamName"
+                placeholder="Muth Mavericks Red" value={team.teamName} onChange={(event) => updateTeam('teamName', event.target.value)} />
+            </div>
+            <div className="form-group">
+              <label htmlFor="date">Team Age Group</label>
+              <input type="text" className="form-control" autoComplete='tourney-agegroup' name="teamAgeGroup" id="teamAgeGroup"
+                placeholder="14U" value={team.teamAgeGroup} onChange={(event) => updateTeam('teamAgeGroup', event.target.value)} />
+            </div>
+            <div className="form-group">
+              <label htmlFor="location">Tournament ID</label>
+              <input type="location" className="form-control" autoComplete='tourney-ID' name="tourneyID" id="tourneyID"
+                placeholder="100001" value={team.tourneyID} onChange={(event) => updateTeam('tourneyID', event.target.value)} />
+            </div>
+            {renderButtons()}
+          </form>
+        </div>
+      );
+    }
+
     function TeamListItem({ team, onEditClicked, onDeleteClicked }) {
 
         return (
@@ -51,10 +82,10 @@ function TeamEntryForm({ tourney, updateTourney, formMode, submitCallback, cance
             <td className="col-md-3">{team.teamAgeGroup}</td>
             <td className="col-md-3">{team.tourneyID}</td>
             <td className="col-md-3 btn-toolbar">
-              <button className="btn btn-success btn-sm" onClick={event => onEditClicked(tourney)}>
+              <button className="btn btn-success btn-sm" onClick={event => onEditClicked(team)}>
                 <i className="glyphicon glyphicon-pencil"></i> Edit
                 </button>
-              <button className="btn btn-danger btn-sm" onClick={event => onDeleteClicked(tourney.id)}>
+              <button className="btn btn-danger btn-sm" onClick={event => onDeleteClicked(team.id)}>
                 <i className="glyphicon glyphicon-remove"></i> Delete
                 </button>
             </td>
@@ -64,9 +95,9 @@ function TeamEntryForm({ tourney, updateTourney, formMode, submitCallback, cance
 
       function TeamList({ teams, onEditClicked, onDeleteClicked }) {
         console.log("The Teams: ");
-        console.log(tourneys);
+        console.log(teams);
         const teamItems = teams.map((team) => (
-          <TeamListItem key={team.id} team={teamss} onEditClicked={onEditClicked} onDeleteClicked={onDeleteClicked} />
+          <TeamListItem key={team.id} team={teams} onEditClicked={onEditClicked} onDeleteClicked={onDeleteClicked} />
         ));
       
         return (
@@ -89,37 +120,6 @@ function TeamEntryForm({ tourney, updateTourney, formMode, submitCallback, cance
         );
       }
 
-    let formSubmitted = (event) => {
-      // Prevent the browser from re-loading the page.
-      event.preventDefault();
-      submitCallback();
-    };
-  
-    return (
-    
-      <div className="teamEntry-form">
-        <h1> Team Entry Form </h1>
-        <form onSubmit={formSubmitted}>
-          <div className="tourneyForm-group">
-            <label>Team Name</label>
-            <input type="text" className="form-control" autoComplete='team-name' name="teamName" id="teamName"
-              placeholder="Muth Mavericks Red" value={team.teamName} onChange={(event) => updateTourney('teamName', event.target.value)} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="date">Team Age Group</label>
-            <input type="text" className="form-control" autoComplete='tourney-agegroup' name="teamAgeGroup" id="teamAgeGroup"
-              placeholder="14U" value={team.teamAgeGroup} onChange={(event) => updateTourney('teamAgeGroup', event.target.value)} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="location">Tournament ID</label>
-            <input type="location" className="form-control" autoComplete='tourney-ID' name="tourneyID" id="tourneyID"
-              placeholder="100001" value={team.tourneyID} onChange={(event) => updateTourney('tourneyID', event.target.value)} />
-          </div>
-          {renderButtons()}
-        </form>
-      </div>
-    );
-  }
 
 function TournamentTeams() {
 let [teamList, setTeamList] = React.useState([
@@ -151,7 +151,7 @@ React.useEffect(() => fetchTeams(), []);
   let updateTeam= (field, value) => {
     let newTeam = { ...currentTeams}
     newTeam[field] = value;
-    setCurrentTourneys(newTeam);
+    setCurrentTeams(newTeam);
   }
 
 
@@ -201,7 +201,7 @@ React.useEffect(() => fetchTeams(), []);
         // The presence of a message key indicates there was an error.
         if (!data.message) {
           currentTeams.id = data.id;
-          setTourneyList([...teamList, currentTeams]);
+          setTeamList([...teamList, currentTeams]);
         } else {
           console.log("New team wasn't created because " + data.message);
           alert(data.message)
@@ -214,7 +214,7 @@ React.useEffect(() => fetchTeams(), []);
       let teamIndex = teamList.findIndex((team) => team.id === currentTeams.id);
 
       newTeamList[teamIndex] = currentTeams;
-      setTourneyList(newTeamList);
+      setTeamList(newTeamList);
       functionSaveTeam(currentTeams);
     }
   }
@@ -240,7 +240,7 @@ React.useEffect(() => fetchTeams(), []);
     console.log("Attempting to post new team");
     console.log(id);
     console.log(options.body);
-    setTourneyList(tourneyList.filter((item) => item.id !== id));
+    setTeamList(teamList.filter((item) => item.id !== id));
     cancelClicked();
     return fetch(`${apiURL}/teams/${id}`, options).then(response => {
       if(response.ok && response.status === 204){
@@ -261,5 +261,19 @@ React.useEffect(() => fetchTeams(), []);
   );
 }
 
+function changeTourneyFormVisibility() {
+    document.getElementsByClassName('tourneyEntry-form')[0].style.visibility = 'visible';
+  } 
+  
+  function changeTeamFormVisibility() {
+    document.getElementsByClassName('teamEntry-form')[0].style.visibility = 'visible';
+  } 
+  function changeTourneyListVisibility() {
+    document.getElementsByClassName('tourney-list')[0].style.visibility = 'visible';
+  } 
+  
+  function changeTeamListVisibility() {
+    document.getElementsByClassName('tourney-list')[0].style.visibility = 'visible';
+  } 
 
   export default TournamentTeams;
